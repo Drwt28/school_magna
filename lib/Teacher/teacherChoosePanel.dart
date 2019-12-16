@@ -1,7 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
-class TeacherChoosePanel extends StatelessWidget {
+class TeacherChoosePanel extends StatefulWidget {
+  @override
+  _TeacherChoosePanelState createState() => _TeacherChoosePanelState();
+}
+
+
+
+class _TeacherChoosePanelState extends State<TeacherChoosePanel> {
+
+  String email;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,6 +25,8 @@ class TeacherChoosePanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+
+
               SizedBox(
                 width: double.infinity,
                 child: RaisedButton(
@@ -78,7 +93,7 @@ class TeacherChoosePanel extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               SizedBox(
                 height: 40.0,
               ),

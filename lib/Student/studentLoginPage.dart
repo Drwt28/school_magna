@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_magna/Student/studentHomeScreen.dart';
 import 'package:school_magna/Student/studentPage.dart';
 
 class StudentPanel extends StatefulWidget {
@@ -53,10 +54,12 @@ class _StudentPanelState extends State<StudentPanel> {
                   )),
             ),
             RaisedButton(
+
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
+
                 }
               },
               child: Text('Submit'),
@@ -64,10 +67,42 @@ class _StudentPanelState extends State<StudentPanel> {
             SizedBox(
               height: 40.0,
             ),
+
+//        DataTable(
+//          columns: [
+//            DataColumn(label: Text('name' , style: TextStyle(
+//              color: Colors.blue
+//            ),))
+//            ,DataColumn(label: Text('name', style: TextStyle(
+//                color: Colors.red
+//            )))
+//           , DataColumn(label: Text('name'))
+//            ,DataColumn(label: Text('name'))
+//          ],
+//
+//          rows: [
+//            DataRow(cells:
+//           [ DataCell(Text('1'))
+//           , DataCell(Text('2')), DataCell(Text('2')), DataCell(Text('2'))
+//
+//    ]
+//    ),        DataRow(cells:
+//           [ DataCell(Text('1'))
+//           , DataCell(Text('2')), DataCell(Text('2')), DataCell(Text('2'))
+//
+//    ]
+//    ) ,       DataRow(cells:
+//           [ DataCell(Text('1'))
+//           , DataCell(Text('2')), DataCell(Text('2')), DataCell(Text('2'))
+//
+//    ]
+//    )
+//          ],
+//        ),
             RaisedButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => StudentPage()));
+                    MaterialPageRoute(builder: (context) => studentHome  ()));
               },
               child: Text('Skip'),
             ),

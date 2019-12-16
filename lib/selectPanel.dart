@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:school_magna/Teacher/teacherChoosePanel.dart';
+import 'package:school_magna/Teacher/teacher_login.dart';
+
 import './Student/studentLoginPage.dart';
 
 class SelectionPanel extends StatelessWidget {
@@ -6,7 +9,9 @@ class SelectionPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Selection Panel"),
+        elevation: 0,
+
+        title: Text("Selection Panel",style: TextStyle(color: Colors.blue),),
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
@@ -15,58 +20,62 @@ class SelectionPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
-                  onPressed: () {},
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(0.0),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[Colors.indigo, Colors.tealAccent],
-                      ),
-                    ),
-                    padding: EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Text('Teacher'),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
-                  onPressed: () {
+
+              GestureDetector(
+                  onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => StudentPanel()));
                   },
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(0.0),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[Colors.indigo, Colors.tealAccent],
-                      ),
-                    ),
-                    padding: EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Text('Student'),
-                    ),
-                  ),
-                ),
-              ),
+                  child: buildCard(
+                      context, "Student", 'assets/teacher/teacher.png'))
+              ,
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => teacher_login()));
+                  },
+                  child: buildCard(
+                      context, "Teacher", 'assets/teacher/teacher.png'))
+
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget buildCard(BuildContext context, String tit, String path) {
+    return AnimatedContainer(
+        duration: Duration(seconds: 1),
+        padding: EdgeInsets.all(30),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [Colors.lightBlue, Colors.blue]),
+              borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                flex: 4,
+                child: Image(
+                  image: AssetImage(path),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Text(
+                  tit,
+                  style: TextStyle(fontSize: 26, color: Colors.white),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
