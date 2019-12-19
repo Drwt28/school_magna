@@ -1,17 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_magna/Teacher/teacherChoosePanel.dart';
+import 'package:provider/provider.dart';
 import 'package:school_magna/Teacher/teacher_login.dart';
-
+import 'package:school_magna/Model/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './Student/studentLoginPage.dart';
+import 'package:school_magna/Teacher/teacherHome.dart';
+
 
 class SelectionPanel extends StatelessWidget {
+  int i;
+
+  SelectionPanel(this.i);
+
+
   @override
   Widget build(BuildContext context) {
+    var sharedPreferences = Provider.of<SharedPreferences>(context);
+    print(sharedPreferences.get("school"));
+
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-
-        title: Text("Selection Panel",style: TextStyle(color: Colors.blue),),
+        backgroundColor: Colors.white,
+        leading: Hero(
+          tag: i,
+          child: Image(
+            image: AssetImage('assets/parent/parents.png'),
+          ),
+        ),
+        title: Text(
+          "Selection Panel",
+          style: TextStyle(color: Colors.blue),
+        ),
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
@@ -20,7 +42,6 @@ class SelectionPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-
               GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -28,9 +49,12 @@ class SelectionPanel extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => StudentPanel()));
                   },
-                  child: buildCard(
-                      context, "Student", 'assets/teacher/teacher.png'))
-              ,
+                  child: CustomWidgets.SelectionPannelCard(
+                      context,
+                      "Parents",
+                      'assets/parent/parents.png',
+                      Colors.indigoAccent,
+                      Colors.indigo)),
               GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -38,9 +62,12 @@ class SelectionPanel extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => teacher_login()));
                   },
-                  child: buildCard(
-                      context, "Teacher", 'assets/teacher/teacher.png'))
-
+                  child: CustomWidgets.SelectionPannelCard(
+                      context,
+                      "Teacher",
+                      'assets/teacher/teacher.png',
+                      Colors.lightBlue,
+                      Colors.blueAccent))
             ],
           ),
         ),
@@ -48,34 +75,4 @@ class SelectionPanel extends StatelessWidget {
     );
   }
 
-  Widget buildCard(BuildContext context, String tit, String path) {
-    return AnimatedContainer(
-        duration: Duration(seconds: 1),
-        padding: EdgeInsets.all(30),
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.3,
-          width: MediaQuery.of(context).size.width * 0.8,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [Colors.lightBlue, Colors.blue]),
-              borderRadius: BorderRadius.circular(10)),
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              Flexible(
-                flex: 4,
-                child: Image(
-                  image: AssetImage(path),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Text(
-                  tit,
-                  style: TextStyle(fontSize: 26, color: Colors.white),
-                ),
-              )
-            ],
-          ),
-        ));
-  }
 }

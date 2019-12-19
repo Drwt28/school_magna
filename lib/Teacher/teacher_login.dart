@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:school_magna/Teacher/classBuilderScreen.dart';
+import 'package:school_magna/Teacher/teacherHome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class teacher_login extends StatefulWidget {
   @override
@@ -8,29 +11,35 @@ class teacher_login extends StatefulWidget {
 }
 
 class _teacher_loginState extends State<teacher_login> {
+  FirebaseUser user;
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  String _e,_p;
+  String _e, _p;
 
   @override
-  void initState() {
-
-    FirebaseAuth.instance.currentUser().then((FirebaseUser user){
-
-      if(user!=null)
-        {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context)=>classBuilderScreen()
-          ));
-        }
-    });
+  initState() {
     super.initState();
+    checkForSignIn();
+  }
 
+  Future checkForSignIn() async {
+    user = await FirebaseAuth.instance.currentUser();
+
+    if (user != null) {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => classBuilderScreen()
+      ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    bool dec = true;
+    user = Provider.of<FirebaseUser>(context);
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -39,8 +48,8 @@ class _teacher_loginState extends State<teacher_login> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              onSaved: (val){
-                _e =val;
+              onSaved: (val) {
+                _e = val;
               },
               controller: email,
               style: TextStyle(fontSize: 18),
@@ -52,12 +61,12 @@ class _teacher_loginState extends State<teacher_login> {
               height: 50,
             ),
             TextFormField(
-              onSaved: (val){
+              onSaved: (val) {
                 _p = val;
               },
-              onChanged: (val){
+              onChanged: (val) {
                 setState(() {
-                  _p =val;
+                  _p = val;
                 });
               },
               controller: password,
@@ -69,32 +78,36 @@ class _teacher_loginState extends State<teacher_login> {
             SizedBox(height: 40),
             Container(
               width: MediaQuery.of(context).size.width * 0.5,
-              child: RaisedButton(
+              child: (dec) ? RaisedButton(
                 child: Text(
                   'Login',
                   style: TextStyle(fontSize: 16),
                 ),
-                onPressed: () async {
-
-                  await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: email.text,
-                          password: password.text)
-                      .then((AuthResult result) {
-                        print(result.user);
-                        
-                        Navigator.push(context, MaterialPageRoute(
-
-                          builder: (context)=>classBuilderScreen()
-                        ));
-
-                  })
-                      .catchError((Error e) {
-
-                        print(e.stackTrace.toString());
+                onPressed: () {
+                  setState(() {
+                    dec = false;
                   });
+                  try {
+                    FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                        email: email.text.trim(),
+                        password: password.text.trim())
+                        .then((AuthResult result) {
+                      print(result.user);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => classBuilderScreen()));
+                    }).catchError((Error e) {
+                      print(e.stackTrace.toString());
+                    });
+                  } catch (e) {
+                    setState(() {
+                      dec = true;
+                    });
+                  }
                 },
-              ),
+              ) : CircularProgressIndicator(),
             )
           ],
         ),
