@@ -41,17 +41,14 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           actions: <Widget>[
-            Hero(
-              tag: 'add',
-              child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddStudentPage()));
-                },
-              ),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddStudentPage()));
+              },
             ),
             IconButton(
               icon: Icon(Icons.power_settings_new),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:school_magna/Services/Class.dart';
+import 'package:school_magna/Services/Student.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
@@ -26,4 +27,19 @@ class DatabaseService {
   }
 
   DocumentSnapshot getDocument(String id, schoolId) {}
+
+
+  List<Student> getStudents(String classId, schoolId) {
+    List<Student> students = [];
+    _db.collection('schools').document(schoolId).collection('students').where(
+        'classId', isEqualTo: classId).getDocuments()
+        .then((query) {
+      for (DocumentSnapshot snapshot in query.documents) {
+        students.add(Student.toStudent(snapshot.data));
+      }
+    });
+
+
+    return students;
+  }
 }
