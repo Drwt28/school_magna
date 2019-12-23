@@ -22,14 +22,31 @@ class _classBuilderScreenState extends State<classBuilderScreen> {
   ScrollController controller;
   String email;
   bool dec = true;
+  bool screen = false;
 
   @override
   initState() {
+
     teacher.init();
+
+    SharedPreferences.getInstance()
+    .then((pref){
+
+
+      var id = pref.getString('id');
+      var schoolid = pref.getString('school');
+
+      checkDocument(id,schoolid);
+
+    });
 
     super.initState();
 
+
     controller = ScrollController();
+
+
+
   }
 
   Future<List> getData() async {
@@ -55,7 +72,7 @@ class _classBuilderScreenState extends State<classBuilderScreen> {
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     var pref = Provider.of<SharedPreferences>(context);
-    return Scaffold(
+    return screen ?Scaffold(
       appBar: AppBar(
         title: Text("Welcome"),
         centerTitle: true,
@@ -115,7 +132,30 @@ class _classBuilderScreenState extends State<classBuilderScreen> {
           ),
         ],
       ),
-    );
+    ):Scaffold(body : Center(child: CircularProgressIndicator()));
+  }
+
+
+checkDocument(String id,schoolId)
+  {
+   var doc =  Firestore.instance.collection('schools/'+schoolId+'/classes').document(id);
+
+   doc.get().then((val){
+
+     if(val.exists)
+       {
+         setState(() {
+           Navigator.pushReplacement(context, MaterialPageRoute(
+             builder: (context)=>TeacherHomePage()
+           ));
+         });
+       }
+     else{
+       setState(() {
+         screen = false;
+       });
+     }
+   });
   }
 
   Widget buildCheckBox(BuildContext context, List list) {
@@ -126,6 +166,17 @@ class _classBuilderScreenState extends State<classBuilderScreen> {
         itemCount: list.length,
         itemBuilder: (context, index) {
           return ListTile(
+            onTap: (){
+              setState(() {
+                if (CheckList[index] == false) {
+                  CheckList[index] = true;
+                  subList.add(list[index]);
+                } else {
+                  CheckList[index] = false;
+                  subList.remove(list[index]);
+                }
+              });
+            },
             title: Text(list[index]),
             trailing: Checkbox(
                 activeColor: Colors.blue,
@@ -169,7 +220,7 @@ class _classBuilderScreenState extends State<classBuilderScreen> {
     });
   }
 
-  @override
+
   Widget buildClassDropDown(BuildContext context) {
     return SizedBox(
         height: 50,

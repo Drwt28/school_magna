@@ -24,12 +24,7 @@ class SelectionPanel extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: Hero(
-          tag: i,
-          child: Image(
-            image: AssetImage('assets/parent/parents.png'),
-          ),
-        ),
+
         title: Text(
           "Selection Panel",
           style: TextStyle(color: Colors.blue),
@@ -54,7 +49,7 @@ class SelectionPanel extends StatelessWidget {
                       "Parents",
                       'assets/parent/parents.png',
                       Colors.indigoAccent,
-                      Colors.indigo)),
+                      Colors.indigo,'parents')),
               GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -67,7 +62,7 @@ class SelectionPanel extends StatelessWidget {
                       "Teacher",
                       'assets/teacher/teacher.png',
                       Colors.lightBlue,
-                      Colors.blueAccent))
+                      Colors.blueAccent,'teacher'))
             ],
           ),
         ),

@@ -77,9 +77,48 @@ class CustomWidgets {
         ));
   }
 
+  static Widget teacherHomePannelCardHeroSingle(BuildContext context, String tit,
+      String path, Color startColor, Color endColor, String tag) {
+    return AnimatedContainer(
+        duration: Duration(seconds: 1),
+        padding: EdgeInsets.all(4),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [startColor, endColor]),
+              borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: Text(
+                  tit,
+                  style: TextStyle(fontSize: 26, color: Colors.white),
+                ),
+              ),Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Hero(
+                    tag: tag,
+                    child: Image(
+                      image: AssetImage(path),
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ));
+  }
+
 //selection pannel card
   static Widget SelectionPannelCard(BuildContext context, String tit,
-      String path, Color startColor, Color endColor) {
+      String path, Color startColor, Color endColor,tag) {
     return AnimatedContainer(
         duration: Duration(seconds: 1),
         padding: EdgeInsets.all(30),
@@ -94,8 +133,11 @@ class CustomWidgets {
             children: <Widget>[
               Flexible(
                 flex: 4,
-                child: Image(
-                  image: AssetImage(path),
+                child: Hero(
+                  tag: tag,
+                  child: Image(
+                    image: AssetImage(path),
+                  ),
                 ),
               ),
               Flexible(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:school_magna/Model/Database/db.dart';
@@ -67,15 +68,42 @@ class _AttendencePageState extends State<AttendencePage> {
               ),
             ),
           ],
-        ));
+        )
+
+        ,persistentFooterButtons: <Widget>[
+    SafeArea(
+      child: CupertinoButton(
+      onPressed: (){
+
+
+      },
+          color: Colors.lightBlue,
+      child: Text('Take Attendence')),
+    )
+      ],
+
+    );
   }
 
+  List<bool> isSelected = [false, false, false];
+
+  List<List<bool>> attendenceList=[];
+
+  List<String> presentList=[],absentList=[],leaveList=[];
+
   Widget buildAttendenceList(List<DocumentSnapshot> snap) {
-    List<bool> isSelected = [false, false, false];
+
+
+    for(var doc in snap)
+      {
+        attendenceList.add(isSelected);
+      }
+
     return ListView.builder(
       itemCount: snap.length,
       itemBuilder: (context, index) {
         return ListTile(
+
           title: Text("\t" + snap[index]['name']),
           trailing: ToggleButtons(
             borderRadius: BorderRadius.circular(20),
@@ -108,14 +136,14 @@ class _AttendencePageState extends State<AttendencePage> {
                       selectColor = Colors.blue;
                     }
 
-                    isSelected[buttonIndex] = !isSelected[buttonIndex];
+                    attendenceList[index][buttonIndex] = !attendenceList[index][buttonIndex];
                   } else {
-                    isSelected[buttonIndex] = false;
+                    attendenceList[index][buttonIndex] = false;
                   }
                 }
               });
             },
-            isSelected: isSelected,
+            isSelected: attendenceList[index],
           ),
         );
       },
